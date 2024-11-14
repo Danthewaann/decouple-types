@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 packages = [
-    { include = "decouple.pyi", from = "." },
+    { include = "decouple-stubs" },
 ]
 
 [tool.poetry.dependencies]
