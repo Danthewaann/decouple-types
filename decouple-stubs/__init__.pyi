@@ -27,7 +27,8 @@ class Undefined: ...
 
 undefined: Undefined
 
-_T = TypeVar("_T")
+_T1 = TypeVar("_T1")
+_T2 = TypeVar("_T2")
 
 class Config:
     repository: RepositoryEmpty
@@ -36,58 +37,58 @@ class Config:
     def get(
         self,
         option: str,
-        default: _T,
         cast: Undefined = ...,
-    ) -> _T: ...
-    @overload
-    def get(
-        self,
-        option: str,
-        cast: _T,
         default: Undefined = ...,
-    ) -> _T: ...
+    ) -> str: ...
     @overload
     def get(
         self,
         option: str,
-        cast: _T,
-        default: _T,
-    ) -> _T: ...
-    @overload
-    def get(
-        self,
-        option: str,
-        default: Undefined = ...,
+        default: _T1,
         cast: Undefined = ...,
+    ) -> str | _T1: ...
+    @overload
+    def get(
+        self,
+        option: str,
+        cast: Callable[..., _T1],
+        default: Undefined = ...,
+    ) -> _T1: ...
+    @overload
+    def get(
+        self,
+        option: str,
+        cast: Callable[..., _T1],
+        default: _T2 = ...,
+    ) -> _T1 | _T2: ...
+    @overload
+    def __call__(
+        self,
+        option: str,
+        cast: Undefined = ...,
+        default: Undefined = ...,
     ) -> str: ...
     @overload
     def __call__(
         self,
         option: str,
-        default: _T,
+        default: _T1,
         cast: Undefined = ...,
-    ) -> _T: ...
+    ) -> str | _T1: ...
     @overload
     def __call__(
         self,
         option: str,
-        cast: _T,
+        cast: Callable[..., _T1],
         default: Undefined = ...,
-    ) -> _T: ...
+    ) -> _T1: ...
     @overload
     def __call__(
         self,
         option: str,
-        cast: _T,
-        default: _T,
-    ) -> _T: ...
-    @overload
-    def __call__(
-        self,
-        option: str,
-        default: Undefined = ...,
-        cast: Undefined = ...,
-    ) -> str: ...
+        cast: Callable[..., _T1],
+        default: _T2 = ...,
+    ) -> _T1 | _T2: ...
 
 class RepositoryEmpty:
     def __init__(self, source: str = ..., encoding=...) -> None: ...
@@ -123,45 +124,45 @@ class AutoConfig:
     def __call__(
         self,
         option: str,
-        default: _T | Undefined,
-        cast: Callable[..., _T] | Undefined = ...,
-    ) -> _T: ...
-    @overload
-    def __call__(
-        self,
-        option: str,
-        cast: Callable[..., _T] | Undefined,
-        default: _T | Undefined = ...,
-    ) -> _T: ...
-    @overload
-    def __call__(
-        self,
-        option: str,
-        cast: Callable[..., _T],
-        default: _T,
-    ) -> _T: ...
-    @overload
-    def __call__(
-        self,
-        option: str,
         cast: Undefined = ...,
         default: Undefined = ...,
     ) -> str: ...
+    @overload
+    def __call__(
+        self,
+        option: str,
+        default: _T1,
+        cast: Undefined = ...,
+    ) -> str | _T1: ...
+    @overload
+    def __call__(
+        self,
+        option: str,
+        cast: Callable[..., _T1],
+        default: Undefined = ...,
+    ) -> _T1: ...
+    @overload
+    def __call__(
+        self,
+        option: str,
+        cast: Callable[..., _T1],
+        default: _T2 = ...,
+    ) -> _T1 | _T2: ...
 
 config: AutoConfig
 
-class Csv(Generic[_T]):
-    cast: Callable[..., _T]
+class Csv(Generic[_T1]):
+    cast: Callable[..., _T1]
     delimiter: str
     strip: str
-    post_process: Callable[..., Sequence[_T]]
+    post_process: Callable[..., Sequence[_T1]]
     @overload
     def __init__(
         self,
-        cast: Callable[..., _T],
+        cast: Callable[..., _T1],
         delimiter: str = ...,
         strip: str = ...,
-        post_process: Callable[..., Sequence[_T]] = ...,
+        post_process: Callable[..., Sequence[_T1]] = ...,
     ) -> None: ...
     @overload
     def __init__(
@@ -171,16 +172,16 @@ class Csv(Generic[_T]):
         strip: str = ...,
         post_process: Callable[..., Sequence[str]] = ...,
     ) -> None: ...
-    def __call__(self, value: Any | None) -> Sequence[_T]: ...
+    def __call__(self, value: Any | None) -> Sequence[_T1]: ...
 
-class Choices(Generic[_T]):
+class Choices(Generic[_T1]):
     flat: list
-    cast: Callable[..., _T]
+    cast: Callable[..., _T1]
     choices: list
     @overload
     def __init__(
         self,
-        cast: Callable[..., _T],
+        cast: Callable[..., _T1],
         flat: list | None = ...,
         choices: tuple[str, str] | None = ...,
     ) -> None: ...
@@ -191,4 +192,4 @@ class Choices(Generic[_T]):
         cast: Callable[..., str] = ...,
         choices: tuple[str, str] | None = ...,
     ) -> None: ...
-    def __call__(self, value: Any) -> _T: ...
+    def __call__(self, value: Any) -> _T1: ...
